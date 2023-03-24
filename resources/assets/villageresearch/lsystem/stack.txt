@@ -1,0 +1,13 @@
+axiom
+{
+    i = 0
+    module iter
+}
+
+iter : i < 5
+{
+    i = i + 1
+    set_block "oakWoodSimple"
+    move [0, height + 1, 0]
+    module iter
+}

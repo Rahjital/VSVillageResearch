@@ -1,0 +1,47 @@
+axiom
+{
+    resize_to [1, height, length]
+
+    module right
+    module left
+    
+    set_block "oakLog"
+}
+
+right
+{
+    move [2, 0, 0]
+    expand z pos "1"
+    set_block "oakLog"
+
+    move [2, 0, 0]
+    expand z pos "1"
+    set_block "oakLog"
+
+    move [2, 0, 0]
+    expand z neg "-1"
+    set_block "oakLog"
+
+    move [2, 0, 0]
+    expand z neg "-1"
+    set_block "oakLog"
+}
+
+left
+{
+    move [-2, 0, 0]
+    expand z "1"
+    set_block "oakLog"
+
+    move [-2, 0, 0]
+    expand z "1"
+    set_block "oakLog"
+
+    move [-2, 0, 0]
+    expand z "-1"
+    set_block "oakLog"
+
+    move [-2, 0, 0]
+    expand z "-1"
+    set_block "oakLog"
+}

@@ -1,0 +1,147 @@
+== GENERAL IDEAS ==
+
+Primary vs Secondary job
+- each "working unit" could have a primary job like farmer/blacksmith/etc., and then an entirely different secondary job like gathering food or firewood, and so on; the primary job would get most of their attention, while the secondary job would be get a much smaller portion of their time
+- would allow small villages to host jobs they otherwise may not support, like a full-time doctor/apothecary; would also be suited well to gathering (which may otherwise suffer from diminishing returns), or can be used for labour
+- this could then also inform what would be found in the backyards of each house
+- specialisation - dedicating both primary and secondary to the same job would lead to "Specialisation", which needs to be a bonus that makes it more than a sum of its parts.s
+--- perhaps specialisation gives the same labour output as both primary and secondary together, but unlocks some more advanced goods
+--- a smaller bonus for doing related jobs together? It makes sense for a blacksmith to also smelt ores, a crop farmer to do dairy farming, etc.
+
+Privileges and rights - in medieval Europe, having yearly markets, brewing beer, or collecting tolls were rights medieval towns had to be granted (in fact, the main difference of villages vs towns was having some of those privileges). Perhaps this could serve as a "tech tree" of sorts, having to spend Wealth to buy the rights? This could serve to specialise settlements further, since buying a right would be a big investement to be capitalised on
+
+Village leader is rychtář/richter
+
+traveller density 
+- certain places (like important trade routes, pilgrimage sites, etc.) would naturally get more visitors
+- villages built around a pre-existing structure, like a sacred hill or memorial point, ruins of an old temple, etc.?
+- villages built along busy routes may focus a big part of their economy on serving travellers (or even grow from a single inn), whereas more remote villages can't rely on this source of income but benefit from much lower Threat (no crime from strangers)
+
+forester - a profession allowing allowing "farming" trees, in case the village needs more
+
+inn vs tavern
+
+scavenging & local resources
+- each area has a certain amount of resources; if it's above a certain level, special infrastructure may be built
+- at any level, resources can also be scavenged from the environment (perhaps "gather" is a better word instead?) without requiring any special infrastructure (no point building a lumber camp for a few scattered trees)
+- quickly diminishing returns - gathering is a good way to get a settlement started, but trade and building infrastructure scales much better and is more efficient once established
+- "special resource" idea
+--- anyone doing a "gather" job earns the village a special "Scavenge" resource similar to Trade, which can then be exchanged for actual physical resources
+--- cost of Scavenge per resource would depend on how common the resource is in the area
+----- diminishing returns - instead of affecting rate of getting Scavenge, the Scavenge point cost of each resource increases the more is bought? That way resources don't compete
+- usually scavenged resources - wood (sticks and firewood), mushrooms and berries, clay, (loose) rock
+
+structures
+- clay industry
+--- clay pit
+--- brickyard - shaping clay into bricks, and firing them in kilns
+----- brickworks - upgraded, factory version of the brickyard?
+- granary - stores agricultural produce; potentially situated at a good point between fields and houses; interior has to be lined with stone for game functionality reasons
+--- silo - an alternative, either a pit, cylindrical, or 
+- (game) larder - like a granary, but for meat (and smaller); built from stone
+--- ice house - upgraded? (wouldn't actually work in game terms)
+--- can potentially also be part of a house rather than separate building?
+- longhouse
+- hospitality industry
+--- tavern - specialised building for letting people drink and eat; no facilities to let travellers stay overnight
+--- inn - place for travellers to eat and rest; can also serve locals with drinks like an inn
+----- coaching inn - upgraded inn with a stable to tend to horses and give travellers fresh ones; much bigger maintenance requirement, so only good for busy roads 
+--- way station - place for people travellers to switch horses and continue moving on without stopping
+
+building traits?
+- each building type could have traits saying which functions it could be used for
+- useful for the AI to decide which buildings or upgrades to make, or potentially even for modular buildings
+- example (hospitality industry)
+--- tavern: eating+drinking
+--- inn: eating+drinking+overnight_stay
+--- coaching inn: eating+drinking+overnight_stay+horse_change
+--- waystation: eating+horse_change+resupply
+- example (ironworking industry)
+--- smithy: smelting+casting+smithing
+--- forge: smithing+advanced_smithing
+--- smeltery: smelting+advanced_smelting
+
+economy
+- predicted demand 
+--- the simulation should look at current demand, as well as predicted demand with 1, then 2, 3, 4, etc. turns
+--- used to prioritise what buildings to build right now, and if all immediate needs are satisfied,
+--- predicted demand should also include plans/goals of the AI
+--- can also differentiate temporary events vs permanent changes - no need to abandon the local mine if demand drops for 2 turns because of bandits, etc.
+
+bridges
+- only straight (and possibly diagonal?)
+- should check for difference between height of the start and the end; small penalty for 1 block difference, but exponential increase as it gets bigger
+--- continous checking for each block of the bridge?
+- most bridges start on land as short distance before the gap itself begins. This would look aesthetically much better; requires trying to expand the ends of the bridge?
+--- may influence selection of bridge type - some bridge kinds may require more space for expansion than others. Perhaps once a path is chosen, space for expansion could be found through BFS?
+--- with height difference between the end, may require longer distance over land on the lower end
+- make sure to take care of "islands" on the way? (for sufficiently small islands in the gap, it is likely better to build one long bridge over the island that multiple smaller bridges)
+
+MAIN ISSUE this project is facing is predictability - it won't ever be as good as an expert human builder, but it might win on variability and always thinking fully of every aspect (where a human might focus on one or another)
+- randomised rules?
+--- each rule still has to be programmed manually, meaning there's still a limited list the players can learn rather quickly
+--- "modular" rules? Rules that are composited from many smaller parts?
+----- Random conditions, randomised values, and random effects that influence each other?
+----- difficult to test
+- randomised rules for filling space between buildings
+- randomised floor plan rules
+- randomised L-system architectural rules
+- some of those rules should have an effect on the simulation (economy) aspect of the generator
+--- say, fortified stone houses reducing Threat, but costing much more stone and Labour than normal houses
+--- using Simulated Annealing to find a good combination?
+----- can be re-run periodically as conditions change, allowing a historical progression of sorts in the buildings
+- some rules should be down to simply taste - mostly visual things
+- randomised resouces - from economy, but also culture/laws (societies with forced labour will likely have surplus Labour, meaning they can spend it much more freely; their warehouses may have narrow doors to prevent theft, etc.)
+
+thatched (grass) roofs need no chimney for the fire - it filters straight through the thatch
+
+hearths
+- types
+--- open - simply an open fire
+--- fireplace - stove-like
+- position
+--- middle of the house
+--- side/in wall
+- outlet
+--- smokehole
+--- smoke outlet - advanced smokehole
+--- chimney
+--- covered chimney - advanced chimney
+- attributes - ability to heat, cooking ability, how much smoke is released into the house, stack effect/burning efficiency, heat lost/extra exposure to the elements through smoke outlet
+
+housebarns
+- historically, domestic animals were often kept in the same building as people - this kept them safer, and made taking care of them easier
+--- potentially for cultures that value their animals a lot?
+
+events
+- choices - sometimes instead of a simple pass/fail based on resources, it may be an active choice
+--- say, a criminal band tries to stop by the village to spend their money and have some fun for a while. Does the village accept them or kick them out?
+----- if they are accepted, they may hang there out more, bringing criminality and other gangs, eventually making it a robber base (steady income of Wealth, but large increase in Threat and visitors start avoiding the town)
+----- if they are kicked out, they may retaliate and damage the village, potentially coming back for further raids until dislodged
+
+
+== TRADE ==
+
+Functions
+- exp(DISTANCE / 200) - inefficiency modifier, makes trade get exponentially more expensive at longer distances
+- DISTANCE * exp(DISTANCE / 200) - delivery cost - the cost it takes to transfer goods, increases exponentially with distance
+- inspired by the rocket equation (trade at greater distances needs more supplies, which in turn themselves need bigger carts, more people and animals, which themselves need supplies - just like rockets and propellant)
+- 200 is an arbitrary constant denoting effectiveness, the higher it is the more effective the mode of transport
+- NEEDED: DISTANCE at which a good will be certain price? - needed for maximum asking price. If village is willing to buy goods for a maximum price X, it makes sense to only consider cities that can supply it at that price
+
+the effects of time?
+- the longer the distance travelled, the longer it takes to deliver the goods
+- people need to be paid - a linear increase in cost with time?
+- perishable foods may get cheaper the longer it takes to transport, to simulate loss in quality
+
+== NARRATIVE FUNCTION ==
+
+Narrative function means that all things going on in the village should be at least hinted at visually for a player paying attention, without them having to read the chronicle or any books, even if it doesn't necessarily apply to the gameplay itself
+
+How to make it clear that village has resources it imports? Those can't be shown to be gathered directly through sawmills, quarries, etc., and so may look out of place
+- markets? Small stockpiles around the village, in backyards, etc?
+
+Markets 
+- every village has a 'village green', a large empty space easily accessible that the village is either centered around (Central European style) or that's close by (English style). This would then host various celebrations as well as markets and any other events
+- by default, a village may host a weekly market of small volume reaching only a few other settlements. They may upgrade to a yearly market (jarmark), and even later to a dedicated marketplace structure (and then something like a trade hall? Where a marketplace is basically a bunch of stalls on open air, while trade hall is a massive structure for trade)
+- village green may host a stockpile or two of materials, even without a dedicated trade building, just to show the imported materials

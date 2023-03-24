@@ -1,0 +1,40 @@
+axiom
+{
+    i = 0
+    module cantorblock
+}
+
+cantor : width > 1
+{
+    i = i + 1
+    split x
+        "width / 3" 
+        { 
+            split z
+                "length / 3" { module cantorblock }
+                "length / 3" { }
+                "length / 3" { module cantorblock }
+        }
+        "width / 3" { }
+        "width / 3" 
+        { 
+            split z
+                "length / 3" { module cantorblock }
+                "length / 3" { }
+                "length / 3" { module cantorblock }
+        }
+}
+
+cantorblock : i % 2 == 0
+{
+    set_block "oakWoodSimple"
+    move [0, height + 1, 0]
+    module cantor
+} 
+
+cantorblock
+{
+    set_block "mapleWoodSimple"
+    move [0, height + 1, 0]
+    module cantor
+}

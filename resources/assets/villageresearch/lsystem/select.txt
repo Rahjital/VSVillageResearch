@@ -1,0 +1,20 @@
+axiom
+{
+    i = 0
+
+    select walls 
+    {
+        module wall
+        i = i + 1
+    }
+}
+
+wall : i % 2 == 0
+{
+    set_block "oakWoodSimple"
+}
+
+wall
+{
+    set_block "mapleWoodSimple"
+}

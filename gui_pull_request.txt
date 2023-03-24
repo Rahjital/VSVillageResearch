@@ -1,0 +1,17 @@
+== ISSUES WITH GUI TO RESOLVE IN A PULL REQUEST ==
+
+Container issues
+- crashes when empty - needs conditions at the beginning of OnMouseDown, OnMouseUp, OnKeyDown, OnKeyPress
+- crashes when multiple containers exist - fixed by same as above
+
+GuiElement issues
+- OnMouseUpOnElement - does not set args.Handled = true (unlike OnMouseDownOnElement, which does) - this means text inputs in containers instantly lose focus, because
+the container thinks the mouse up happened somewhere outside the bounds/on no element at all
+
+GuiElementTextInput
+- uses GlScissors instead of api.PushScissors and api.PopScissors - this means it breaks scrollable areas and shows outside of them
+
+newly add: GuiElementScrollableArea
+- having a simple way to make an area with a scrollbar and a container is incredibly useful
+- option to only have the scrollbar show up when content bounds are bigger than clipping bounds, ie when there is something to scroll to? Scrollbar is pointless otherwise
+- ask Fulgen for permission

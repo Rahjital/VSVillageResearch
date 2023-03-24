@@ -1,0 +1,16 @@
+axiom
+{
+    resize_to [1, 1, length]
+    move [0, -1, 0]
+    i = 0
+    module arm
+}
+
+arm : i < 8
+{
+    set_block "oakWoodSimple"
+    move [0, 1, 0]
+    rotate y "45"
+    i = i + 1
+    module arm
+}

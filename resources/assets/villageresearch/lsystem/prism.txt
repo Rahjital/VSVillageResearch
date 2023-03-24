@@ -1,0 +1,5 @@
+axiom
+{
+    shape prism
+    set_block "oakLog"
+}

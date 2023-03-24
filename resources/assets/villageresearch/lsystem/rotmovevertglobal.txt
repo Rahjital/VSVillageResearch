@@ -1,0 +1,25 @@
+// this script won't work until global rotations are added
+axiom
+{
+    rotate x "90"
+    resize_to [1, 1, length / 3]
+    i = 0
+    module base
+}
+
+base : i < 8
+{
+    i = i + 1
+    module arm
+    rotate z "45"
+    module base
+}
+
+arm
+{
+    move [0, 0, length]
+    set_block "pineWoodSimple"
+    move [0, 0, length / 2]
+    resize_to [1, 1, 1]
+    set_block "mapleWoodSimple"
+}

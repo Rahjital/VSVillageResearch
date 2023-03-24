@@ -1,0 +1,37 @@
+axiom
+{
+    resize_to [1, 1, length]
+
+    move [0, -1, 0]
+    module base
+    module yawtest
+    module pitchtest
+    module rolltest
+}
+
+base
+{
+    set_block "oakWoodSimple"
+}
+
+yawtest
+{
+    move [0, 1, 0]
+    rotate y "90"
+    set_block "mapleWoodSimple"
+}
+
+pitchtest
+{
+    move [0, length / 2 + 2, 0]
+    rotate x "90" // should be [90, 0, 0]
+    set_block "pineWoodSimple"
+}
+
+rolltest
+{
+    resize_to [length, 1, 1]
+    move [0, length * 1.5 + 1, 0]
+    rotate z "90" // should be [0, 0, 90]
+    set_block "oakWoodSimple"
+}

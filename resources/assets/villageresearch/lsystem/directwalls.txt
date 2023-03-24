@@ -1,0 +1,8 @@
+axiom
+{
+    select walls 
+    { 
+        expand z "-1"
+        set_block "oakPlank" 
+    }
+}

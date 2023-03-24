@@ -1,0 +1,173 @@
+= QUEUE =
+
+selection
+- shapes 
+--- Box, Cylinder, Prism
+
+test uneven rectangle base modules (X: 3 Y: 3 Z: 5 appeared bugged before with cantor set)
+
+
+add "const"
+- parsed at the same level as modules (ie are NOT declared in modules, but alongside them)
+- saved directly into the grammar rather than a module
+- might allow shortening some axiom modules
+- should throw errors when module variable is set to the same name as a const? (since it'd never be used)
+
+tokenizer improvements
+- context-sensitive tokenizer
+--- variable holding a delegate function, can be set to a function if special rule tokens are encountered
+--- if variable is null, standard number-word-specialToken parsing would take place
+--- would allow splitting special rules into separate functions
+--- example: on // special token, set special rule that ignores rest of the line; math expressions that don't have to be wrapped in ""; etc.
+--- potentially allows parser to set next expected token as well, if needed
+- add option to base tokenizer for tracking of newlines
+
+parser - implement interface
+- dependency injection for handling of statements
+- would allow a test interface separated from VS
+- later on, could make porting the L-System to Godot or other projects much easier
+
+
+
+= IDEAS =
+
+Extrude statement
+- 2 arguments, axes to extrude in, and extrude length
+- extrudes new modules out of current selection
+Expand statement
+- 2 arguments, axes to extend, and expansion length
+- difference between positive and negative axes; what if I want to extend only the bottom part of the selection, but not the top?
+Pattern statement
+- 2 arguments, pattern mode, and a pattern
+- the pattern is loaded from an external file, and then used to set blocks according to the pattern mode
+- pattern mode can be either REPEAT, which repeats the tile
+--- possible FIT pattern mode, which would repeat the pattern but (may be poor fit for a block-based game)
+- ability to only pattern on certain axes? (so that ie. a fence isn't stacked on itself no matter how high the selection is)
+--- slope handling?
+- is this actually necessary? A single module fits "STRETCH" pattern, and "REPEAT" pattern can perhaps be handled better by a dedicated statement
+Repeat statement
+- 3 arguments, axis to repeat over, distance over which to repeat, and a statement list of instructions to execute for each segment
+- typically used to 
+- optional snap plane argument?
+- how to handle when selection size isn't a multiple of the distance? Scale each segment up/down a little bit? Insert one (or two) tiny padding segments?
+
+statements may need to be able to select whether to operate on local vs global coordinates
+- for local : x is left/right, y is up/down, z is forwards/backwards
+- selection may need to know which direction it is facing (so that Z is always forwads for say, beams, etc.)
+- statements need to be able to choose between global and local (together with selecting axes? Optional extra parameter?)
+- also useful for setting blocks - ie orienting wood blocks the right way
+- default to local axis; only implement global if REALLY needed
+
+different statements for local vs global? ('move' vs 'move_to'; 'expand' vs 'resize_to'; etc.)
+
++selection
+- shapes 
+--- simple ones like box
+--- line, plane
+--- prism, pyramid, cylinder, ...
+--- triangle! - good for things like sides of a prism, etc.
+--- all 2D shapes actually (circle, etc.)
+- allow selecting sub-shapes? (box -> walls, corners, floor/roof, interior; and so on)
+- a function to iterate through blocks of a shape
+
++selection implementation
+- is 2 position vectors (Start and End) and 1 direction vector enough for 
+--- for some shapes (line, sphere, ...), 2 position vectors may be enough to determine direction
+--- how does this work with triangles?
+----- maybe just have 3 generic vectors, which can serve as either start/end+direction, or just three points? (or leaving the third unused for some shapes)
+- selection has an Enum determining which shape it is
+- 1 big static class with methods for selecting sub shapes, iterating through blocks, etc.
+--- or perhaps 1 static 'signpost' class, which calls implementations in more specialised classes for each Enum type?
+- WAIT!!
+--- every selection type has to work with every statement
+--- what happens if Expand is used on line type? How to handle different thicknesses in different axes? Isn't it redundant with a box then?
+--- every selection needs a rotation for local coordinates to work anyway
+--- should a selection instead have a Size vector, a Position vector, and a Rotation vector?
+----- transformations may have to be used there
+----- how to do things like slanted roofs? (especially if they have to be say, 10 blocks thick?) - slanted boxes in general are difficult; new shape entirely?
+----- how will position be handled this way? will it be centered on the middle of the selection, or a corner?
+--- 2D shapes are basically 1-block thick 3D shapes; a circle is 1-tall cylinder, etc.
+----- how will a 3D triangle/prism shape be defined? 2 vectors defining bounding box, and a 3rd vector defining the topmost point of the triangle?
+--- should selection just have 4 (or even 6) vectors
+----- problem - how will the script set the position of the topmost point on the triangle/prism, and so on?
+------- specialised shapes? Special statements to either modify the shape, or directly set the 3rd/4th/etc. vector?
+
+block palette
+- a single class called by the grammar
+- contains a Dictionary of string -> Block class
+- Block class can be either simple (always returns the same block) or more complex, returning random block, based on orientation/rotation (wood), etc.
+- should accept either straight ID int, or a Vintage Story string
+- first truly specialised class for VS
+- set_block statement should allow to specify along which direction blocks should be laid (defaults to the Y-axis?)
+
+flipping
+- make statements work with selection where the End vector is larger than the Start vector (or where Size is negative)
+- allows for easy flipping by scaling the selection by a negative amount (ie 'scale -1' statement)
+
+module occlusion
+- how does it work with priority?
+- idea 1
+--- Occludes statement - takes an optional argument to take a layer mask name?
+--- special 'occluded' variable that is true when occluding, and false when not (so it can be used in math expressions)
+----- if Occludes statement takes a layer mask name, how should the variable look like? Something like 'occluded_maskname'?
+
+how to handle snap planes?
+- ProcWorld handles that by inserting straight into (from their code, "repeat x [3|wall] panel")
+--- how would that work with the math parser? Sounds difficult to integrate
+--- if necessary to integrate this way, perhaps snap plane names would be treated as special variables, returning the distance to nearest snap plane?
+----- not ideal, would still require extra handling in math expressions ("repeat x "min(3, snap_wall)" { module panel }"); this seems inelegant
+- perhaps better handled as optional argument to statements that can support snap planes? (like "repeat x "3" snap_to wall { module panel }")
+--- less generic - danger than some functions where it would be useful may be forgotten
+--- verbose?
+
+slope handling - certain features (fences, etc.) need to follow terrain contours - how to do that? special kind of selection/shape?
+
+test cases
+- handling intersecting volumes? - like those in http://procworld.blogspot.com/2012/04/room-with-angle.html
+- L-shaped, or T-shaped roofs - how to handle without any holes, or extra blocks inside?
+--- how to handle smaller roof volumes joining onto larger roof volumes?
+--- optional argument for set_block to avoid placing blocks that'd intersect with another module shape? - safer than just setting a smaller prism to air blocks
+- sloped roof surfaces - wood blocks need to face horizontally along the length, but stair blocks need to face 'up'?
+
+debugger
+- show wireframes of all current modules in world
+- show wireframe (or even transparent box) of the current statement
+- ability to either step through statements one by one, or to automatically go through statements with a (configurable?) delay between each
+- readout of the current module and current statement, maybe even list of existing modules and statements in the current module
+--- or possibly even the entire script, with the currently executed line highlighted?
+
+math parser improvements
+- ++ operator (for i++, to replace the constant i = i + 1)
+- ternary operators? (would help reduce duplicate modules in scripts like cantor)
+- ?? operator? (null-coalescing) 
+
+procedural combination of rules
+- pre-defined stages, based on floorplan - entire room/house, walls, floor, roof
+- village generator assigns a set of rules to each stage, likely 2-3 per stage (more for walls, less for rooms, etc.)
+- rules might run before a stage (ie to raise a whole house above th ground) or after a stage (adding decoration, pillars, etc. to a wall)
+- special rule variables, assigned with the rules themselves (so that each rule can have their own height variable, etc.) - special symbol? (like @height)
+
+procedural combination of rules, plan #2
+- the building generator places some initial modules based on a floor plan (floor, wall, roof, foundation, window, door, chimney, etc.)
+- the generator then assigns rules to these base modules, each ruleset running after another in the order they were assigned
+- special conditions for rules - minimum width, and so on (so that modules don't overlap - a door rule with a frame might need 3 blocks of space, etc.)
+- ISSUES TO SOLVE
+--- can't just assign all the rules to say, the same "wall" module - only the first rule runs, the others would get ignored
+----- stages? - first rule might get assigned to wall_1, next to wall_2, etc.; module would create the next stage's module if it wants other rules to continue
+----- special command or variable ("module @next_stage?")
+----- maybe creating the next stage's module should be automatic, otherwise every module will have the boilerplate "module @next_stage?" statement
+------- that does mean a module won't be able to alter the next stage's selection, though
+--- needs a way to defer certain modules - a window might need to only evaluate when the wall is done, otherwise the later wall stages could overwrite it
+
+
+! DONE !
+
+scripting
+
+tokenizer - add line tracking to NextCharacter(), so that exceptions can show where they occur in the input
+
+selection
+- subshape selection
+- function to iterate through shape blocks
+- transformation
+- rotation

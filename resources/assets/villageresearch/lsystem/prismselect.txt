@@ -1,0 +1,19 @@
+axiom
+{
+    shape prism
+
+    set_block "oakLog"
+
+    select bases
+    {
+        move [0, 0, 2]
+        set_block "mapleLog"
+    }
+
+    move [0, 3, 0]
+
+    select slopes
+    {
+        set_block "pineLog"
+    }
+}

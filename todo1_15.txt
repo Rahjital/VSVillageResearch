@@ -1,0 +1,29 @@
+DEBUGGER
+- advance by one step (+1)
+- advance automatically with delay after each step (500ms default?) (>)
+- advance automatically in a loop until finished or a breakpoint is hit (>>>)
+- list of all modules
+--- ability to select module from list and show its script/list of statements
+--- add breakpoint to any statement
+--- list of variables for selected module
+- show all modules as wireframes
+- show currently active module as transparent flat-coloured box
+- show the usual three coloured lines signifying X, Y, and Z in the centre of the currently active module
+
+SWITCH TO "3D BRESENHAM" 
+- currently iterating a shape takes a "cloud" of points, rotates it, and tries to apply it to blocks in the world - this has issues when rotated
+--- sometimes applies two points to the same block (distortion)
+--- points can apply to blocks in un-intuitive ways (a line at 45 degree angle can instead form an L-shape)
+--- could potentially lead to holes
+- Bresenham lines instead calculate offsets manually, and guarantee the line moves in 1-pixel/block intervals - no holes or applying same offset twice
+- a similar algorithm for 3D shapes should have better results in voxelisation 
+- cubes are simplest case, might be tricky for spheres, cones, etc.
+--- "voxelisation" approach might work there - iterate every block in the bounding box on the shape and test if it falls within the shape, if yes then set it
+
+consider putting origin in bottom-close-left corner by default, instead of in the centre?
+
+hexahedron shape
+- instead of a cube, prism, etc., have a single hexahedron shape where the eight points can be defined
+- can supply a line (although that could potentially be an ultra-simple shape of its own), a box, a prism (top width of 0), a pyramid (top width and height of 0),
+can be slanted at wish, etc.
+- might be much simpler to implement with 3D Bresenham

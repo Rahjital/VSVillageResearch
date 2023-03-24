@@ -1,0 +1,24 @@
+axiom
+{
+    resize_to [1, 1, length / 3]
+    move [0, -1, 0]
+    i = 0
+    module base
+}
+
+base : i < 8
+{
+    i = i + 1
+    module arm
+    rotate y "45"
+    module base
+}
+
+arm
+{
+    move [0, 0, length]
+    set_block "pineWoodSimple"
+    move [0, 0, length / 2]
+    resize_to [1, 1, 1]
+    set_block "mapleWoodSimple"
+}

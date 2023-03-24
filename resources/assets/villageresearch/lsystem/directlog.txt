@@ -1,0 +1,37 @@
+axiom
+{
+    resize_to [1, 1, length]
+
+    move [0, -1, 0]
+    module base
+    module yawtest
+    module pitchtest
+    module rolltest
+}
+
+base
+{
+    set_block "oakLog"
+}
+
+yawtest
+{
+    move [0, 1, 0]
+    rotate y "90"
+    set_block "oakLog"
+}
+
+pitchtest
+{
+    move [0, length / 2 + 2, 0]
+    rotate x "90"
+    set_block "oakLog"
+}
+
+rolltest
+{
+    resize_to [length, 1, 1]
+    move [0, length * 1.5 + 1, 0]
+    rotate z "90"
+    set_block "oakLog"
+}

@@ -1,0 +1,7 @@
+axiom
+{
+    resize_to [width, 1, 1]
+    move [0, 3, 0]
+    rotate z "45"
+    set_block "oakLog"
+}

@@ -1,0 +1,7 @@
+axiom
+{
+    split y
+        "height / 3" { set_block "oakWoodSimple" }
+        "height / 3" { set_block "pineWoodSimple" }
+        "height / 3" { set_block "mapleWoodSimple" }
+}

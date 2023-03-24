@@ -1,0 +1,4 @@
+axiom
+{
+    set_block "randomStone"
+}
